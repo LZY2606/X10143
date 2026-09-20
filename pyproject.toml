@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61,<68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "leasedebug"
+version = "0.1.0"
+description = "Deterministic distributed-lease debugging workbench"
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+leasedebug = "leasedebug.app:main"
+
+[tool.setuptools]
+packages = ["leasedebug"]
+
+[tool.setuptools.package-data]
+leasedebug = ["static/*"]

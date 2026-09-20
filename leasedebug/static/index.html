@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>租约调试台</title>
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>租约调试台</h1>
+      <p>单调虚拟时间 · 服务端时钟裁决 · fence token · 幂等键 · 分区重放</p>
+    </div>
+    <div class="top-actions">
+      <select id="experimentSelect"></select>
+      <button id="newExperimentBtn">新建实验</button>
+      <button id="exportBtn">导出</button>
+      <label class="file-btn">导入<input id="importFile" type="file" accept="application/json" hidden /></label>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel controls">
+      <h2>实验设置</h2>
+      <label>实验名<input id="experimentName" value="默认实验" /></label>
+      <label>默认 TTL（毫秒）<input id="ttlMs" type="number" value="10000" /></label>
+      <div class="form-grid">
+        <input id="clientId" placeholder="客户端 ID，如 c1" />
+        <input id="clockOffset" type="number" placeholder="墙上时钟偏移" />
+        <input id="clientLatency" type="number" placeholder="默认延迟" />
+        <button id="addClientBtn">添加客户端</button>
+      </div>
+      <div id="clientList" class="chips"></div>
+
+      <h2>安排事件</h2>
+      <div class="form-grid event-form">
+        <select id="opClient"></select>
+        <select id="opType">
+          <option>acquire</option><option>renew</option><option>read</option><option>release</option>
+        </select>
+        <input id="resource" value="r1" placeholder="资源" />
+        <input id="sendMs" type="number" placeholder="发送时刻" />
+        <input id="latencyMs" type="number" placeholder="请求延迟，可空" />
+        <input id="ttlOpMs" type="number" placeholder="TTL，可空" />
+        <input id="fenceToken" type="number" placeholder="fence，可空" />
+        <input id="idemKey" placeholder="幂等键，可空" />
+        <button id="addOpBtn">安排请求</button>
+      </div>
+      <div class="form-grid">
+        <select id="partClient"></select>
+        <input id="partStart" type="number" placeholder="分区开始" />
+        <input id="partEnd" type="number" placeholder="分区结束" />
+        <button id="addPartBtn">制造分区</button>
+      </div>
+
+      <h2>分叉</h2>
+      <div class="form-grid">
+        <select id="latencyClient"></select>
+        <input id="forkLatency" type="number" placeholder="分支延迟" />
+        <input id="forkLabel" placeholder="分叉名称" value="延迟分叉" />
+        <button id="snapshotBtn">保存快照</button>
+        <button id="forkBtn">保存并分叉</button>
+      </div>
+      <select id="branchSelect"></select>
+    </section>
+
+    <section class="panel stage">
+      <div class="timeline-card">
+        <div class="timeline-head">
+          <h2>模拟时间轴</h2>
+          <div><span id="nowLabel">t=0</span><span id="maxLabel"></span></div>
+        </div>
+        <input id="timeline" type="range" min="0" max="100" value="0" step="1" />
+        <div class="transport">
+          <button id="stepBtn">单步</button>
+          <button id="runBtn">快进</button>
+          <span id="finishBadge"></span>
+        </div>
+        <div id="timelineEvents" class="timeline-events"></div>
+      </div>
+
+      <div class="grid-two">
+        <section>
+          <h2>服务端租约状态</h2>
+          <div id="serverState" class="state-list"></div>
+        </section>
+        <section>
+          <h2>客户端视角</h2>
+          <select id="viewClient"></select>
+          <pre id="clientState" class="json-box"></pre>
+        </section>
+      </div>
+
+      <section>
+        <h2>请求详情</h2>
+        <div class="table-wrap"><table id="requestsTable"></table></div>
+        <pre id="requestDetail" class="json-box detail">点击请求行查看完整字段。</pre>
+      </section>
+
+      <section>
+        <h2>不变量面板</h2>
+        <div id="invariants"></div>
+      </section>
+
+      <section>
+        <h2>最终摘要</h2>
+        <pre id="summary" class="json-box"></pre>
+      </section>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
