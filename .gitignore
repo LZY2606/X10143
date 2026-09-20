@@ -34,3 +34,6 @@ coverage/
 .vite/
 .turbo/
 *.tsbuildinfo
+*.egg-info/
+.leasedebug.db
+leasedebug.db

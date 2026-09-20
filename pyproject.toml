@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61,<68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "leasedebug"
+version = "0.1.0"
+description = "分布式租约时序重放调试台（虚拟时钟模拟）"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+leasedebug = "leasedebug.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+leasedebug = ["static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
